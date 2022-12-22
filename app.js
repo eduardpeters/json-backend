@@ -15,6 +15,9 @@ app.use(express.json());
 app.use('/', indexRoute);
 app.use('/heroes', heroesRoute);
 
+// Set empty superheroes data, updated on each request
+app.locals.superheroes = null;
+
 // Server listen
 app.listen(PORT, (error) => {
 	if (!error)

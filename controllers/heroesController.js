@@ -1,16 +1,17 @@
 const express = require('express');
-const router = express.Router();
 const { loadData } = require('../helpers/dataRW.js');
 
 const getAll = (req, res) => {
-    const file = process.env.DB_FILE;
-    const superheroes = loadData(file);
-    if (!superheroes) {
+    if (!req.app.locals.superheroes)
+        req.app.locals.superheroes = loadData();
+    if (req.app.locals.superheroes)
+        res.status(200).json(req.app.locals.superheroes);
+    else
         res.status(500).end();
-    }
-    else {
-        res.status(200).json(superheroes);
-    }
 };
 
-module.exports = { getAll };
+const getID = (req, res) => {
+    //nothing yet
+}
+
+module.exports = { getAll, getID };

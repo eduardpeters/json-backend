@@ -1,7 +1,8 @@
 const fs = require('fs');
 
 //Read and parse JSON file
-const loadData = (file) => {
+const loadData = () => {
+    const file = process.env.DB_FILE;
     try {
         const rawData = fs.readFileSync(file);
         return JSON.parse(rawData);

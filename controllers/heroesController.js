@@ -1,5 +1,5 @@
 const { writeData } = require('../helpers/dataRW.js');
-const { checkAll, assignID } = require('../helpers/controllerHelpers.js');
+const { checkAll } = require('../helpers/controllerHelpers.js');
 
 const getAll = (req, res) => {
     if (req.app.locals.superheroes)
@@ -70,4 +70,18 @@ const postHero = (req, res) => {
         res.status(400).send('Invalid request format');
 }
 
-module.exports = { getAll, getHero, replaceHero, postHero };
+const deleteHero = (req, res) => {
+    const id = parseInt(req.params.id);
+    const oldLength = req.app.locals.superheroes.length;
+    req.app.locals.superheroes = req.app.locals.superheroes.filter(hero => hero.id !== id);
+    // only write if something was deleted
+    if (req.app.locals.superheroes.length !== oldLength) {
+        if (!writeData(req.app.locals.superheroes)) {
+            req.app.locals.superheroes = null;
+            return res.status(500).end();
+        }
+    }
+    res.status(204).end();
+}
+
+module.exports = { getAll, getHero, replaceHero, postHero, deleteHero };

@@ -2,8 +2,13 @@ const fs = require('fs');
 
 //Read and parse JSON file
 const loadData = (file) => {
-    const rawData = fs.readFileSync(file);
-    return JSON.parse(rawData);
+    try {
+        const rawData = fs.readFileSync(file);
+        return JSON.parse(rawData);
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 }
 
 //Write JSON file

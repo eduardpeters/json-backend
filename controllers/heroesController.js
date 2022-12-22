@@ -6,7 +6,12 @@ const getAll = (req, res) => {
 };
 
 const getID = (req, res) => {
-    //nothing yet
+    const id = parseInt(req.params.id);
+    const singleHero = req.app.locals.superheroes.filter(hero => hero.id === id)[0];
+    if (singleHero)
+        res.status(200).json(singleHero);
+    else
+        res.status(404).send('No entry matches the id requested');
 }
 
 module.exports = { getAll, getID };

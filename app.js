@@ -1,5 +1,6 @@
 require('dotenv/config');
 const express = require('express');
+const { loadLocals } = require('./middleware/loadLocals.js');
 
 const indexRoute = require('./routes/index.js');
 const heroesRoute = require('./routes/heroes.js');
@@ -8,17 +9,22 @@ const heroesRoute = require('./routes/heroes.js');
 const app = express();
 const PORT = process.env.PORT;
 
-// Body parser middleware
+//  Middleware setup
 app.use(express.json());
+app.use(loadLocals);
 
 // Routes to handle
 app.use('/', indexRoute);
 app.use('/heroes', heroesRoute);
 
-// Set empty superheroes data, updated on each request
+/* 
+* Set empty superheroes data:
+* Will be initialized by middleware upon first request, pedagogical exercise,
+* as it could be initialized upon server start.
+*/
 app.locals.superheroes = null;
 
-// Server listen
+// Server listens on configured port
 app.listen(PORT, (error) => {
 	if (!error)
 		console.log(`Server up and listening on port: ${PORT}`);

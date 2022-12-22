@@ -26,6 +26,5 @@ jspm_packages/
 .env
 .env.test
 
-# JSON base file
-superhero.json
+# JSON backup file
 backup_superhero.json

@@ -18,13 +18,26 @@ const getHero = (req, res) => {
 }
 
 const replaceHero = (req, res) => {
-    console.log(req.body);
-    console.log(checkAll(req.body));
     const id = parseInt(req.params.id);
     const heroIndex = req.app.locals.superheroes.findIndex(hero => hero.id === id);
-    console.log(heroIndex)
-    if (checkAll(req.body) && heroIndex !== -1)
-        res.status(200).send("PUT received!");
+    if (checkAll(req.body) && heroIndex !== -1) {
+        const updatedHero = {
+            id: id,
+            name: req.body.name,
+            publisher: req.body.publisher,
+            alter_ego: req.body.alter_ego,
+            first_appearance: req.body.first_appearance,
+            image: req.body.image,
+            characters: req.body.characters
+        };
+        req.app.locals.superheroes[heroIndex] = updatedHero;
+        if (writeData(req.app.locals.superheroes))
+            res.status(201).json(updatedHero);
+        else {
+            res.status(500).end();
+            req.app.locals.superheroes = null;
+        }
+    }
     else {
         res.status(400);
         if (heroIndex === -1)

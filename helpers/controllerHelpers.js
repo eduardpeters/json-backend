@@ -6,4 +6,10 @@ const checkAll = reqBody => {
     return (KEYS.every(key => bodyKeys.includes(key) && reqBody[key]));
 }
 
-module.exports = { checkAll };
+const getValidFields = reqBody => {
+    const bodyKeys = Object.keys(reqBody);
+    // Return an array with the valid keys provided
+    return (bodyKeys.filter(key => KEYS.includes(key)));
+}
+
+module.exports = { checkAll, getValidFields };

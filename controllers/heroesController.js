@@ -1,5 +1,5 @@
 const { writeData } = require('../helpers/dataRW.js');
-const { checkAll } = require('../helpers/controllerHelpers.js');
+const { checkAll, getValidFields } = require('../helpers/controllerHelpers.js');
 
 const getAll = (req, res) => {
     if (req.app.locals.superheroes)
@@ -31,6 +31,30 @@ const replaceHero = (req, res) => {
             characters: req.body.characters
         };
         req.app.locals.superheroes[heroIndex] = updatedHero;
+        if (writeData(req.app.locals.superheroes))
+            res.status(201).json(updatedHero);
+        else {
+            res.status(500).end();
+            req.app.locals.superheroes = null;
+        }
+    }
+    else {
+        res.status(400);
+        if (heroIndex === -1)
+            res.send('Invalid ID');
+        else
+            res.send('Invalid request format');
+    }
+}
+
+const updateHero = (req, res) => {
+    const id = parseInt(req.params.id);
+    const heroIndex = req.app.locals.superheroes.findIndex(hero => hero.id === id);
+    const newFields = getValidFields(req.body);
+    if (newFields.length && heroIndex !== -1) {
+        // this is a pointer, so mutating updatedHero mutates the actual object in app.locals
+        const updatedHero = req.app.locals.superheroes[heroIndex];
+        newFields.forEach(field => updatedHero[field] = req.body[field]);
         if (writeData(req.app.locals.superheroes))
             res.status(201).json(updatedHero);
         else {
@@ -84,4 +108,4 @@ const deleteHero = (req, res) => {
     res.status(204).end();
 }
 
-module.exports = { getAll, getHero, replaceHero, postHero, deleteHero };
+module.exports = { getAll, getHero, replaceHero, updateHero, postHero, deleteHero };

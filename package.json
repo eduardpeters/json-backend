@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "devstart": "npx nodemon app.js"
+    "devstart": "npx nodemon app.js --ignore superhero.json"
   },
   "repository": {
     "type": "git",

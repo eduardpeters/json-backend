@@ -1,10 +1,10 @@
 const fs = require('fs');
+const FILE = process.env.DB_FILE;
 
 //Read and parse JSON file
 const loadData = () => {
-    const file = process.env.DB_FILE;
     try {
-        const rawData = fs.readFileSync(file);
+        const rawData = fs.readFileSync(FILE);
         return JSON.parse(rawData);
     } catch (error) {
         console.error(error);
@@ -13,9 +13,15 @@ const loadData = () => {
 }
 
 //Write JSON file
-const writeData = (file, data) => {
+const writeData = (data) => {
     stringData = JSON.stringify(data, null, 4);
-    return fs.writeFileSync(file, stringData);
+    try {
+        fs.writeFileSync(FILE, stringData);
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
 }
 
 module.exports = { loadData, writeData };

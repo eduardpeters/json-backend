@@ -19,8 +19,8 @@ app.use('/heroes', heroesRoute);
 
 /* 
 * Set empty superheroes data:
-* Will be initialized by middleware upon first request, pedagogical exercise,
-* as it could be initialized upon server start.
+* Will be initialized by middleware upon first request, academic exercise,
+* as it could psimply be initialized at once
 */
 app.locals.superheroes = null;
 

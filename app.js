@@ -1,5 +1,6 @@
 require('dotenv/config');
 const express = require('express');
+const cors = require('cors');
 const { loadLocals } = require('./middleware/loadLocals.js');
 
 const indexRoute = require('./routes/index.js');
@@ -10,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 //  Middleware setup
+app.use(cors( {origin: process.env.CORS_ORIGIN} ));
 app.use(express.json());
 app.use(loadLocals);
 

@@ -1,6 +1,19 @@
 const { writeData } = require('../helpers/dataRW.js');
 const { checkAll, getValidFields } = require('../helpers/controllerHelpers.js');
 
+const getList = (req, res) => {
+    if (req.app.locals.superheroes) {
+        const heroesList = req.app.locals.superheroes.map(hero => ({
+            id: hero.id,
+            name: hero.name,
+            publisher: hero.publisher
+        }));
+        res.status(200).json(heroesList);
+    }
+    else
+        res.status(500).end();
+}
+
 const getAll = (req, res) => {
     if (req.app.locals.superheroes)
         res.status(200).json(req.app.locals.superheroes);
@@ -108,4 +121,4 @@ const deleteHero = (req, res) => {
     res.status(204).end();
 }
 
-module.exports = { getAll, getHero, replaceHero, updateHero, postHero, deleteHero };
+module.exports = { getList, getAll, getHero, replaceHero, updateHero, postHero, deleteHero };
